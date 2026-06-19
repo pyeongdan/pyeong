@@ -1,9 +1,21 @@
 ---
 title: 평
 ---
+## SNS:
 
-DJMAX RESPECT V 공식 방송 정리 노트입니다.
+https://x.com/elcleardan
 
-## 방송관련글
+@elcleardan
 
-[[방송 관련글]]
+
+https://x.com/notelcleardan
+
+@notelcleardan
+
+
+
+## 글:
+
+[[성과]]
+
+[[DJMAX 방송 관련글]]
