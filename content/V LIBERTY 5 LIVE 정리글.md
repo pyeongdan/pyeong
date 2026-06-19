@@ -1,4 +1,5 @@
 ---
+title: V LIBERTY 5 정리글
 tags:
   - DJMAX
   - LIVERTY
