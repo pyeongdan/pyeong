@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-plugins-
 
       - name: Install dependencies
-        run: npm ci && chmod +x node_modules/.bin/quartz
+        run: npm ci && chmod +x quartz/bootstrap-cli.mjs
 
       - name: Setup Pages
         id: pages
