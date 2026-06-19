@@ -1,5 +1,5 @@
 ---
-title: ONGEKI COLLABORATION LIVE
+title: ONGEKI COLLABORATION LIVE (미완)
 ---
 
 방송을 시작하기에 앞서서 안타까운 소식이 있어서 잠깐 애도를 표하고자 합니다.  

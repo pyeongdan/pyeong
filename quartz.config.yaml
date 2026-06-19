@@ -224,8 +224,7 @@ plugins:
   - source: github:quartz-community/footer
     enabled: true
     options:
-      links:
-        그래프: https://pyeongdan.github.io/pyeong/graph.html
+      links: {}
   - source: github:quartz-community/recent-notes
     enabled: false
   - source: github:quartz-community/spacer
