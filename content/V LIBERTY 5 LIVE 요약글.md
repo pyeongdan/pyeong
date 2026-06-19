@@ -4,7 +4,6 @@ tags:
   - DJMAX
   - LIVERTY
 ---
-title: V LIBERTY 5 요약글
 
 1부
 스팀할인 23일2시까지진행중,이후 여름할인때 또 할인예정

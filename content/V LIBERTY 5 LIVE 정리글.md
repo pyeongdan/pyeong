@@ -4,7 +4,7 @@ tags:
   - DJMAX
   - LIVERTY
 ---
-풀 스크립트:[[V LIBERTY 5 LIVE 스크립트]]
+
 
 ![[DJMAX RESPECT V new DLC Live Broadcast 53-25 screenshot.png]]
 또 3개월 만에 이렇게 디엘씨 방송으로 많은 분들 뵙게되었습니다.
