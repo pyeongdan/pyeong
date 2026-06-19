@@ -7,7 +7,7 @@ configuration:
   analytics:
     provider: plausible
   locale: en-US
-  baseUrl: pyeongdan.github.io/djmax-notes
+  baseUrl: pyeongdan.github.io/pyeong
   ignorePatterns:
     - private
     - templates
