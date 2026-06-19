@@ -1,11 +1,4 @@
----
-title: V LIBERTY 5 LIVE 스크립트
-author: pyeong
-tags:
-  - DJMAX
-  - LIVERTY
----
-정리글:[[V LIBERTY 5 LIVE 정리글]]
+
 
 또 삼개월 만에 이렇게 디엘씨 방송으로 많은 분들 뵙게되었습니다.
 
