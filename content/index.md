@@ -1,6 +1,7 @@
 ---
 title: 평
 ---
+
 ## SNS:
 
 https://x.com/elcleardan

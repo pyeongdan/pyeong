@@ -1,7 +1,9 @@
 ---
+title: V LIBERTY 5 요약글
 tags:
   - DJMAX
   - LIVERTY
+banner: logo.png
 ---
 
 1부
