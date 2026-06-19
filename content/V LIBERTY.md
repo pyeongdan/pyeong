@@ -1,7 +1,7 @@
 ---
 tags:
   - djmax
-  - LIVERTY
+  - LIBERTY
 ---
 
 

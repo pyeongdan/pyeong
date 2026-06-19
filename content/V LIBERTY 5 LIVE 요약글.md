@@ -1,7 +1,7 @@
 ---
 tags:
   - DJMAX
-  - LIVERTY
+  - LIBERTY
 banner: LIBERTY 5 사진/logo.png
 ---
 
