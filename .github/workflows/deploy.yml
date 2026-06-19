@@ -82,6 +82,9 @@ jobs:
             grep -o "color:ee,alpha:1\|color:te,alpha:1\|width:1,color:v\|width:2,color:v\|active?ee:te\|active?ee:ee" "$JS_FILE" || true
           fi
 
+      - name: Generate graph data
+        run: node scripts/generate-graph.js
+
       - name: Build Quartz
         run: npx quartz build
 

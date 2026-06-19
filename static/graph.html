@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그래프 — 평</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf8f8;
+    --surface: #f0eeee;
+    --border: #e5e5e5;
+    --text: #2b2b2b;
+    --text-dim: #4e4e4e;
+    --node: #284b63;
+    --node-hover: #84a59d;
+    --node-center: #84a59d;
+    --edge: #b8b8b8;
+    --edge-hover: #284b63;
+    --label: #2b2b2b;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161618;
+      --surface: #1e1e20;
+      --border: #393639;
+      --text: #ebebec;
+      --text-dim: #d4d4d4;
+      --node: #7b97aa;
+      --node-hover: #84a59d;
+      --node-center: #84a59d;
+      --edge: #646464;
+      --edge-hover: #7b97aa;
+      --label: #ebebec;
+    }
+  }
+
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: "Source Sans Pro", sans-serif; }
+
+  #toolbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 48px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    z-index: 100;
+  }
+
+  #toolbar a {
+    color: var(--node);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  #toolbar a:hover { color: var(--node-hover); }
+
+  #toolbar span {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  #search {
+    flex: 1;
+    max-width: 280px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 13px;
+    outline: none;
+  }
+  #search:focus { border-color: var(--node); }
+  #search::placeholder { color: var(--text-dim); }
+
+  #info {
+    font-size: 12px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  #canvas-wrap {
+    position: fixed;
+    top: 48px; left: 0; right: 0; bottom: 0;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+  svg:active { cursor: grabbing; }
+
+  .edge {
+    stroke: var(--edge);
+    stroke-width: 1.5px;
+    stroke-opacity: 0.6;
+    transition: stroke 0.15s, stroke-opacity 0.15s, stroke-width 0.15s;
+  }
+  .edge.highlighted {
+    stroke: var(--edge-hover);
+    stroke-opacity: 1;
+    stroke-width: 2px;
+  }
+  .edge.faded { stroke-opacity: 0.08; }
+
+  .node circle {
+    fill: var(--node);
+    stroke: var(--bg);
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.15s, r 0.15s;
+  }
+  .node.hovered circle { fill: var(--node-hover); }
+  .node.faded circle { opacity: 0.15; }
+  .node.match circle { fill: var(--node-center); }
+
+  .node text {
+    fill: var(--label);
+    font-size: 11px;
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    user-select: none;
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+  .node.faded text { opacity: 0.15; }
+
+  #tooltip {
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: var(--text);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+    z-index: 200;
+    max-width: 200px;
+  }
+</style>
+</head>
+<body>
+<div id="toolbar">
+  <a href="/pyeong/">← 평</a>
+  <span>/</span>
+  <span>전체 그래프</span>
+  <input id="search" type="text" placeholder="노드 검색..." autocomplete="off">
+  <span id="info"></span>
+</div>
+<div id="canvas-wrap">
+  <svg id="svg"></svg>
+</div>
+<div id="tooltip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+(async () => {
+  // Load data — same directory as this file
+  let data;
+  try {
+    const res = await fetch('./graph-data.json');
+    if (!res.ok) throw new Error(res.status);
+    data = await res.json();
+  } catch (e) {
+    document.getElementById('canvas-wrap').innerHTML =
+      '<p style="padding:2rem;color:var(--text-dim)">graph-data.json 로드 실패: ' + e.message + '</p>';
+    return;
+  }
+
+  const { nodes, links } = data;
+  document.getElementById('info').textContent = `${nodes.length}개 노드 · ${links.length}개 연결`;
+
+  const svg = d3.select('#svg');
+  const wrap = document.getElementById('canvas-wrap');
+
+  function W() { return wrap.clientWidth; }
+  function H() { return wrap.clientHeight; }
+
+  // Zoom layer
+  const g = svg.append('g');
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.1, 5])
+    .on('zoom', e => g.attr('transform', e.transform));
+  svg.call(zoom);
+
+  // Double-click resets zoom
+  svg.on('dblclick.zoom', null);
+  svg.on('dblclick', () => svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity));
+
+  // Build adjacency set for hover highlighting
+  const adjSet = new Set();
+  for (const l of links) adjSet.add(`${l.source.id||l.source}|${l.target.id||l.target}`);
+  function adjacent(a, b) { return adjSet.has(`${a}|${b}`) || adjSet.has(`${b}|${a}`); }
+
+  // Force simulation — stop() first so we can pre-run ticks synchronously
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(80).strength(0.5))
+    .force('charge', d3.forceManyBody().strength(-220).distanceMax(400))
+    .force('center', d3.forceCenter(W() / 2, H() / 2))
+    .force('collide', d3.forceCollide(22))
+    .alphaDecay(0.02)
+    .stop();
+
+  // Edge elements
+  const edgeEl = g.append('g').attr('class', 'edges')
+    .selectAll('line')
+    .data(links)
+    .join('line')
+    .attr('class', 'edge');
+
+  // Node elements
+  const nodeEl = g.append('g').attr('class', 'nodes')
+    .selectAll('g')
+    .data(nodes)
+    .join('g')
+    .attr('class', 'node')
+    .call(d3.drag()
+      .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y; })
+      .on('end', (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; })
+    );
+
+  // Degree-based radius (min 5, max 14)
+  const degree = {};
+  for (const n of nodes) degree[n.id] = 0;
+  for (const l of links) {
+    degree[l.source.id || l.source] = (degree[l.source.id || l.source] || 0) + 1;
+    degree[l.target.id || l.target] = (degree[l.target.id || l.target] || 0) + 1;
+  }
+  const maxDeg = Math.max(1, ...Object.values(degree));
+  function nodeRadius(d) { return 5 + 9 * (degree[d.id] || 0) / maxDeg; }
+
+  nodeEl.append('circle').attr('r', d => nodeRadius(d));
+
+  nodeEl.append('text')
+    .attr('y', d => nodeRadius(d) + 10)
+    .text(d => d.title);
+
+  // Hover interaction
+  const tooltip = document.getElementById('tooltip');
+
+  nodeEl
+    .on('mouseenter', (e, d) => {
+      const neighbors = new Set([d.id]);
+      for (const l of links) {
+        const s = l.source.id || l.source;
+        const t = l.target.id || l.target;
+        if (s === d.id) neighbors.add(t);
+        if (t === d.id) neighbors.add(s);
+      }
+
+      nodeEl.classed('hovered', n => n.id === d.id);
+      nodeEl.classed('faded', n => !neighbors.has(n.id));
+      edgeEl.classed('highlighted', l => (l.source.id||l.source) === d.id || (l.target.id||l.target) === d.id);
+      edgeEl.classed('faded', l => (l.source.id||l.source) !== d.id && (l.target.id||l.target) !== d.id);
+
+      tooltip.textContent = d.title;
+      tooltip.style.opacity = '1';
+    })
+    .on('mousemove', e => {
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top = (e.clientY - 28) + 'px';
+    })
+    .on('mouseleave', () => {
+      nodeEl.classed('hovered faded', false);
+      edgeEl.classed('highlighted faded', false);
+      tooltip.style.opacity = '0';
+    })
+    .on('click', (e, d) => {
+      e.stopPropagation();
+      window.location.href = d.url;
+    });
+
+  // Render function used by both sync pre-run and live tick
+  function applyPositions() {
+    edgeEl
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
+    nodeEl.attr('transform', d => `translate(${d.x},${d.y})`);
+  }
+
+  // Pre-run 300 ticks synchronously so nodes have stable positions immediately
+  // (also works in environments where requestAnimationFrame is throttled)
+  sim.tick(300);
+  applyPositions();
+
+  // Register tick handler for drag interactivity (simulation restarts on drag start)
+  sim.on('tick', applyPositions);
+
+  // Search
+  const searchEl = document.getElementById('search');
+  searchEl.addEventListener('input', () => {
+    const q = searchEl.value.trim().toLowerCase();
+    if (!q) {
+      nodeEl.classed('match faded', false);
+      edgeEl.classed('faded', false);
+      return;
+    }
+    nodeEl.classed('match', d => d.title.toLowerCase().includes(q) || d.id.toLowerCase().includes(q));
+    nodeEl.classed('faded', d => !d.title.toLowerCase().includes(q) && !d.id.toLowerCase().includes(q));
+    edgeEl.classed('faded', l => {
+      const s = l.source.id || l.source;
+      const t = l.target.id || l.target;
+      const sMatch = nodes.find(n => n.id === s)?.title.toLowerCase().includes(q);
+      const tMatch = nodes.find(n => n.id === t)?.title.toLowerCase().includes(q);
+      return !sMatch && !tMatch;
+    });
+  });
+
+  // Resize
+  window.addEventListener('resize', () => {
+    sim.force('center', d3.forceCenter(W() / 2, H() / 2)).alpha(0.1).restart();
+  });
+
+  // Fit all nodes into view after pre-run positions are set
+  (function fitView() {
+    const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs);
+    const y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const pw = W(), ph = H();
+    const scale = 0.8 * Math.min(pw / (x1 - x0 + 60), ph / (y1 - y0 + 60));
+    const tx = pw / 2 - scale * (x0 + x1) / 2;
+    const ty = ph / 2 - scale * (y0 + y1) / 2;
+    svg.call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+  })();
+})();
+</script>
+</body>
+</html>

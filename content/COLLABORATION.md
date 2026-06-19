@@ -1,4 +1,5 @@
 ---
+title: COLLABORATION
 tags:
   - DJMAX
   - COLLABORATION
