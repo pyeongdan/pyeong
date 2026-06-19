@@ -60,9 +60,21 @@ jobs:
       - name: Patch graph link visibility
         run: |
           FILE=".quartz/plugins/graph/src/components/scripts/graph.inline.ts"
-          sed -i 's/color: lightgray,$/color: gray,/' "$FILE"
-          sed -i "s/linkData.active ? gray : lightgray/linkData.active ? gray : gray/" "$FILE"
-          sed -i 's/alpha: l.alpha, width: 1,/alpha: l.alpha, width: 2,/' "$FILE"
+          echo "=== Graph plugin files ==="
+          find .quartz/plugins/graph -name "*.js" -o -name "*.ts" | head -20
+          echo "=== Checking TS file ==="
+          if [ -f "$FILE" ]; then
+            grep -n "lightgray\|width: 1\|width: 2" "$FILE" || echo "No matches found"
+            sed -i 's/color: lightgray,$/color: gray,/' "$FILE"
+            sed -i "s/linkData.active ? gray : lightgray/linkData.active ? gray : gray/" "$FILE"
+            sed -i 's/alpha: l\.alpha, width: 1,/alpha: l.alpha, width: 2,/' "$FILE"
+            echo "=== After patch ==="
+            grep -n "color: gray\|width: 2" "$FILE" || echo "Patch did not apply"
+          else
+            echo "FILE NOT FOUND: $FILE"
+          fi
+          echo "=== Looking for compiled JS ==="
+          find .quartz/plugins/graph -name "*.js" | xargs grep -l "lightgray" 2>/dev/null || echo "No compiled JS with lightgray found"
 
       - name: Build Quartz
         run: npx quartz build
