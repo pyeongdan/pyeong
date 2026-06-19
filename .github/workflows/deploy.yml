@@ -57,6 +57,13 @@ jobs:
       - name: Install Quartz plugins
         run: npx quartz plugin install
 
+      - name: Patch graph link visibility
+        run: |
+          FILE=".quartz/plugins/graph/src/components/scripts/graph.inline.ts"
+          sed -i 's/color: lightgray,$/color: gray,/' "$FILE"
+          sed -i "s/linkData.active ? gray : lightgray/linkData.active ? gray : gray/" "$FILE"
+          sed -i 's/alpha: l.alpha, width: 1,/alpha: l.alpha, width: 2,/' "$FILE"
+
       - name: Build Quartz
         run: npx quartz build
 
