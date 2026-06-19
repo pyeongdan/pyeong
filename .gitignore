@@ -9,4 +9,5 @@ private/
 .replit
 replit.nix
 .quartz/
+!.quartz/plugins/graph/
 quartz/cli/tui/dist/
