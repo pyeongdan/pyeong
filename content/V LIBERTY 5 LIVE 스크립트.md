@@ -1,9 +1,8 @@
 ---
-title: V LIBERTY 5 스크립트
 tags:
   - DJMAX
   - LIVERTY
-banner: logo.png
+banner: LIBERTY 5 사진/logo.png
 ---
 
 

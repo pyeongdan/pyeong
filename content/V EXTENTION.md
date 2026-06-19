@@ -1,7 +1,7 @@
 ---
-title: V EXTENTION
 tags:
   - EXTENSION
+  - DJMAX
 ---
 
 정리본들(익텐4,5) 있긴한데 언제옮길지는미정... 많이 미흡합니다

@@ -1,7 +1,4 @@
 ---
-title: DJMAX 방송 관련글
-aliases:
-  - 방송 관련글
 tags:
   - DJMAX
 ---

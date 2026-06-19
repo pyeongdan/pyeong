@@ -1,7 +1,8 @@
 ---
-title: ONGEKI COLLABORATION LIVE (미완)
+tags:
+  - DJMAX
+  - COLLABORATION
 ---
-
 방송을 시작하기에 앞서서 안타까운 소식이 있어서 잠깐 애도를 표하고자 합니다.  
 디제이맥스에 오랫동안 멋진 아트를 보여주신 노란곰(NG)님, Young-in 님의 부고 소식을 접하게 됐는데요.  
 이 자리를 빌어서 삼가 고인의 명복을 빕니다.
