@@ -1,6 +1,10 @@
-﻿---
-title: V LIBERTY 5 스크립트
 ---
+tags:
+  - DJMAX
+  - LIVERTY
+---
+
+
 또 삼개월 만에 이렇게 디엘씨 방송으로 많은 분들 뵙게되었습니다.
 
 DPENGUIN:안녕하세요 저는 디제이맥스 사업 담당 DPENGUIN 입니다 반갑습니다.
