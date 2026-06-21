@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>평 — 디자인 시안</title>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #0e0e10;
+  color: #e0e0e0;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+/* ── SWITCHER ── */
+.switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  gap: 8px;
+  background: #1a1a1e;
+  border: 1px solid #2e2e34;
+  border-radius: 10px;
+  padding: 6px;
+}
+.switcher button {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 11px;
+  font-family: inherit;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+.switcher button.active {
+  background: #284b63;
+  color: #fff;
+}
+
+/* ── LABEL ── */
+.variant-label {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════
+   VARIANT A — 미니멀 다크
+══════════════════════════════ */
+#varA {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.va-wrap {
+  width: 520px;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.va-site-tag {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #84a59d;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.va-site-tag::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: #84a59d;
+}
+
+.va-name {
+  font-family: 'Schibsted Grotesk', sans-serif;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1;
+  color: #f0f0f0;
+  letter-spacing: -0.03em;
+  margin-bottom: 48px;
+}
+
+.va-sns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 56px;
+}
+.va-sns a {
+  text-decoration: none;
+  color: #c8c8cc;
+  font-size: 15px;
+  padding: 14px 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.22s, border-color 0.22s, color 0.22s;
+}
+.va-sns a:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.14);
+  color: #e8e8ec;
+}
+.va-sns a span.handle { color: rgba(255,255,255,0.2); font-size: 12px; margin-left: 0; }
+
+.va-section-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+.va-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.va-links a {
+  text-decoration: none;
+  color: #7b97aa;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.15s;
+}
+.va-links a:hover { color: #84a59d; }
+.va-links a .arr {
+  font-size: 12px;
+  color: #444;
+  transition: color 0.15s;
+}
+.va-links a:hover .arr { color: #84a59d; }
+
+/* ══════════════════════════════
+   VARIANT B — 카드 그리드
+══════════════════════════════ */
+#varB { display: none; }
+
+.vb-wrap {
+  max-width: 720px;
+  margin: 80px auto 0;
+}
+
+.vb-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #1e1e22;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.vb-name {
+  font-family: 'Schibsted Grotesk', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #ebebec;
+  line-height: 1;
+}
+.vb-name span { color: #7b97aa; }
+
+.vb-sns-row {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 6px;
+}
+.vb-sns-row a {
+  text-decoration: none;
+  font-size: 12px;
+  color: #555;
+  transition: color 0.15s;
+}
+.vb-sns-row a:hover { color: #84a59d; }
+
+.vb-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.vb-card {
+  background: #141416;
+  border: 1px solid #1e1e22;
+  border-radius: 10px;
+  padding: 24px 28px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+.vb-card:hover {
+  border-color: #284b63;
+  background: #161820;
+}
+.vb-card-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #84a59d;
+  margin-bottom: 12px;
+}
+.vb-card-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.vb-card-sub {
+  font-size: 12px;
+  color: #444;
+  line-height: 1.6;
+}
+.vb-card.wide {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+}
+.vb-card.wide .vb-card-title { margin-bottom: 0; font-size: 16px; }
+
+/* ══════════════════════════════
+   VARIANT C — 라이트 / 절제
+══════════════════════════════ */
+#varC { display: none; min-height: 100vh; }
+
+/* ══════════════════════════════
+   VARIANT D — 프사 배경 히어로
+══════════════════════════════ */
+#varD { display: none; background: #faf8f8; min-height: 100vh; }
+
+.vd-hero {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.vd-hero-bg {
+  position: absolute;
+  inset: -20px;
+  background-image: url('https://unavatar.io/twitter/elcleardan');
+  background-size: cover;
+  background-position: center top;
+  filter: blur(28px) brightness(0.85) saturate(1.2);
+  transform: scale(1.15);
+}
+
+.vd-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 248, 248, 0.05) 0%,
+    rgba(250, 248, 248, 0.35) 50%,
+    rgba(250, 248, 248, 1) 100%
+  );
+}
+
+.vd-hero-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 40px 32px;
+}
+
+.vd-name {
+  font-family: 'Schibsted Grotesk', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  margin-bottom: 10px;
+}
+
+.vd-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+  margin-bottom: 16px;
+}
+
+.vd-sns-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vd-sns-tag {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: background 0.15s;
+}
+.vd-sns-tag:hover {
+  background: rgba(255,255,255,0.28);
+}
+
+.vd-body {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+.vd-section-title {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b8b8b8;
+  margin-bottom: 12px;
+}
+
+.vd-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vd-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #2b2b2b;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+.vd-item:hover { background: #f0eeee; }
+.vd-item-arr { color: #e0e0e0; font-size: 12px; }
+.vd-item:hover .vd-item-arr { color: #284b63; }
+
+.vc-wrap {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 100px 60px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+#varC {
+  position: relative;
+  overflow: hidden;
+}
+
+.vc-name {
+  font-family: 'Schibsted Grotesk', sans-serif;
+  font-size: 88px;
+  font-weight: 700;
+  color: #2b2b2b;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.vc-tagline {
+  font-size: 14px;
+  color: rgba(30,20,60,0.45);
+  letter-spacing: 0.02em;
+  margin-bottom: 72px;
+}
+
+.vc-section { margin-bottom: 48px; }
+.vc-section-title {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(30,20,60,0.38);
+  margin-bottom: 16px;
+}
+
+.vc-sns-banner {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  cursor: pointer;
+  background: rgba(12, 8, 35, 0.07);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background 0.25s, border-color 0.25s;
+}
+.vc-sns-banner::after {
+  content: '→';
+  font-size: 18px;
+  color: rgba(30,20,60,0.22);
+  transition: color 0.18s, transform 0.18s;
+}
+.vc-sns-banner:hover {
+  background: rgba(12, 8, 35, 0.18);
+  border-color: rgba(255,255,255,0.32);
+}
+.vc-sns-banner:hover::after { color: #5b7ea8; transform: translateX(4px); }
+.vc-sns-banner.banner-a { border-color: rgba(80,130,210,0.18); }
+.vc-sns-banner.banner-b { border-color: rgba(130,70,210,0.18); }
+.vc-sns-banner.banner-a:hover { border-color: rgba(80,130,210,0.38); }
+.vc-sns-banner.banner-b:hover { border-color: rgba(130,70,210,0.38); }
+.vc-banner-text {
+  position: relative;
+  z-index: 1;
+  font-family: 'Schibsted Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(30,20,60,0.75);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.vc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 44px;
+  height: 128px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: rgba(30,20,60,0.82);
+  font-size: 40px;
+  font-family: 'Schibsted Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: rgba(12, 8, 35, 0.07);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.vc-item:hover {
+  background: rgba(12, 8, 35, 0.18);
+  border-color: rgba(255,255,255,0.32);
+  color: rgba(20,10,50,0.95);
+}
+.vc-item-sub { font-size: 11px; color: rgba(30,20,60,0.4); }
+.vc-item-arr { color: rgba(30,20,60,0.22); font-size: 18px; transition: color 0.18s, transform 0.18s; }
+.vc-item:hover .vc-item-arr { color: #5b7ea8; transform: translateX(4px); }
+
+/* mobile responsive */
+@media (max-width: 768px) {
+  .vc-wrap { padding: 80px 28px 80px; }
+  .vc-name { font-size: 80px; }
+  .vc-tagline { font-size: 13px; }
+  .vc-item { height: 96px; padding: 0 28px; font-size: 30px; }
+  .vc-item-arr { font-size: 15px; }
+  .va-wrap { width: 100%; padding: 0 24px; }
+  .va-name { font-size: 80px; }
+}
+@media (max-width: 480px) {
+  .vc-wrap { padding: 60px 18px 60px; }
+  .vc-name { font-size: 60px; }
+  .vc-item { height: 80px; padding: 0 20px; font-size: 24px; }
+  .vc-item-arr { font-size: 13px; }
+  .va-name { font-size: 64px; }
+  .va-wrap { padding: 0 16px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="variant-label" id="varLabel">A — 미니멀 다크</div>
+
+<div class="switcher">
+  <button class="active" onclick="show('A')">A</button>
+  <button onclick="show('B')">B</button>
+  <button onclick="show('C')">C</button>
+  <button onclick="show('D')">D</button>
+</div>
+
+<!-- ── VARIANT A ── -->
+<div id="varA">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="daTail1" x1="915" y1="88" x2="142" y2="538" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="white" stop-opacity="0.5"/>
+        <stop offset="55%" stop-color="white" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="white" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="daGlow1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="white" stop-opacity="1"/>
+        <stop offset="12%" stop-color="white" stop-opacity="0.88"/>
+        <stop offset="35%" stop-color="white" stop-opacity="0.32"/>
+        <stop offset="70%" stop-color="white" stop-opacity="0.06"/>
+        <stop offset="100%" stop-color="white" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="daTail2" x1="248" y1="685" x2="1012" y2="252" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#a8c4f8" stop-opacity="0.44"/>
+        <stop offset="55%" stop-color="#a8c4f8" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#a8c4f8" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="daGlow2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="white" stop-opacity="1"/>
+        <stop offset="12%" stop-color="#d8eaff" stop-opacity="0.85"/>
+        <stop offset="35%" stop-color="#90b8f0" stop-opacity="0.28"/>
+        <stop offset="70%" stop-color="#6090d8" stop-opacity="0.05"/>
+        <stop offset="100%" stop-color="#6090d8" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <!-- star field -->
+    <circle cx="68" cy="48" r="1.1" fill="white" opacity="0.5"/>
+    <circle cx="112" cy="72" r="0.6" fill="white" opacity="0.35"/>
+    <circle cx="295" cy="38" r="0.8" fill="white" opacity="0.45"/>
+    <circle cx="488" cy="62" r="1.3" fill="white" opacity="0.6"/>
+    <circle cx="524" cy="41" r="0.5" fill="white" opacity="0.3"/>
+    <circle cx="695" cy="55" r="0.9" fill="white" opacity="0.5"/>
+    <circle cx="870" cy="32" r="1" fill="white" opacity="0.45"/>
+    <circle cx="1050" cy="78" r="1.2" fill="white" opacity="0.55"/>
+    <circle cx="1142" cy="48" r="0.7" fill="white" opacity="0.4"/>
+    <circle cx="165" cy="185" r="0.8" fill="white" opacity="0.38"/>
+    <circle cx="388" cy="155" r="1" fill="white" opacity="0.5"/>
+    <circle cx="618" cy="168" r="0.6" fill="white" opacity="0.32"/>
+    <circle cx="782" cy="142" r="1.1" fill="white" opacity="0.52"/>
+    <circle cx="1108" cy="195" r="0.9" fill="white" opacity="0.42"/>
+    <circle cx="72" cy="358" r="0.7" fill="white" opacity="0.35"/>
+    <circle cx="335" cy="328" r="1" fill="white" opacity="0.48"/>
+    <circle cx="958" cy="342" r="0.8" fill="white" opacity="0.4"/>
+    <circle cx="1178" cy="385" r="1.1" fill="white" opacity="0.5"/>
+    <circle cx="488" cy="510" r="0.9" fill="white" opacity="0.42"/>
+    <circle cx="742" cy="495" r="1.2" fill="white" opacity="0.55"/>
+    <circle cx="58" cy="632" r="1" fill="white" opacity="0.45"/>
+    <circle cx="268" cy="688" r="0.7" fill="white" opacity="0.35"/>
+    <circle cx="885" cy="712" r="1.1" fill="white" opacity="0.5"/>
+    <circle cx="180" cy="478" r="0.8" fill="white" opacity="0.4"/>
+    <circle cx="620" cy="552" r="1" fill="white" opacity="0.48"/>
+    <circle cx="1082" cy="462" r="0.7" fill="white" opacity="0.36"/>
+    <circle cx="400" cy="645" r="1.1" fill="white" opacity="0.5"/>
+    <circle cx="848" cy="608" r="0.8" fill="white" opacity="0.42"/>
+    <path d="M 915 88 C 724 204 339 431 147 546 L 138 530 C 333 421 721 198 915 88 Z" fill="url(#daTail1)"/>
+    <path d="M 915 88 C 718 212 325 445 136 556 L 132 548 C 322 436 714 205 915 88 Z" fill="url(#daTail1)" opacity="0.28"/>
+    <ellipse cx="915" cy="88" rx="38" ry="38" fill="url(#daGlow1)"/>
+    <path d="M 248 685 C 441 580 825 366 1016 260 L 1008 244 C 818 354 438 574 248 685 Z" fill="url(#daTail2)"/>
+    <path d="M 248 685 C 445 574 832 358 1020 250 L 1014 241 C 828 349 441 566 248 685 Z" fill="url(#daTail2)" opacity="0.26"/>
+    <ellipse cx="248" cy="685" rx="34" ry="34" fill="url(#daGlow2)"/>
+  </svg>
+  <div class="va-wrap">
+    <div class="va-name">평</div>
+
+    <div class="va-section-label">글</div>
+    <nav class="va-links">
+      <a href="#">
+        성과
+        <span class="arr">→</span>
+      </a>
+      <a href="#">
+        DJMAX 방송 관련글
+        <span class="arr">→</span>
+      </a>
+    </nav>
+
+    <div class="va-section-label" style="margin-top:40px">SNS</div>
+    <div class="va-sns">
+      <a href="https://x.com/elcleardan" target="_blank">흥 <span class="handle">@elcleardan</span></a>
+      <a href="https://x.com/notelcleardan" target="_blank">평 <span class="handle">@notelcleardan</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- ── VARIANT B ── -->
+<div id="varB">
+  <div class="vb-wrap">
+    <div class="vb-header">
+      <div class="vb-name">평<span>.</span></div>
+      <div class="vb-sns-row">
+        <a href="#">@elcleardan</a>
+        <a href="#">@notelcleardan</a>
+      </div>
+    </div>
+
+    <div class="vb-grid">
+      <a class="vb-card" href="#">
+        <div class="vb-card-label">성과</div>
+        <div class="vb-card-title">기록</div>
+        <div class="vb-card-sub">DJMAX · IIDX · 기타 PC 리겜</div>
+      </a>
+      <a class="vb-card" href="#">
+        <div class="vb-card-label">방송 관련글</div>
+        <div class="vb-card-title">DJMAX 방송 정리</div>
+        <div class="vb-card-sub">V EXTENTION · V LIBERTY · COLLABORATION</div>
+      </a>
+      <a class="vb-card wide" href="#">
+        <div>
+          <div class="vb-card-label">최근</div>
+          <div class="vb-card-title">V LIBERTY 5 LIVE 요약글</div>
+        </div>
+        <span style="color:#333;font-size:18px">→</span>
+      </a>
+      <a class="vb-card wide" href="#">
+        <div>
+          <div class="vb-card-label">최근</div>
+          <div class="vb-card-title">ONGEKI COLLABORATION LIVE (미완)</div>
+        </div>
+        <span style="color:#333;font-size:18px">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── VARIANT D ── -->
+<div id="varD">
+  <div class="vd-hero">
+    <div class="vd-hero-bg"></div>
+    <div class="vd-hero-gradient"></div>
+    <div class="vd-hero-content">
+      <div class="vd-name">평</div>
+      <div class="vd-tagline">DJMAX · IIDX</div>
+      <div class="vd-sns-row">
+        <a class="vd-sns-tag" href="#">𝕏 @elcleardan</a>
+        <a class="vd-sns-tag" href="#">𝕏 @notelcleardan</a>
+      </div>
+    </div>
+  </div>
+  <div class="vd-body">
+    <div class="vd-section-title">글</div>
+    <div class="vd-list">
+      <a class="vd-item" href="#">
+        <span>성과</span>
+        <span class="vd-item-arr">→</span>
+      </a>
+      <a class="vd-item" href="#">
+        <span>DJMAX 방송 관련글</span>
+        <span class="vd-item-arr">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── VARIANT C ── -->
+<div id="varC">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="lcTail1" x1="138" y1="82" x2="778" y2="398" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#4070c8" stop-opacity="0.4"/>
+        <stop offset="55%" stop-color="#4070c8" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#4070c8" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="lcGlow1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="white" stop-opacity="0.95"/>
+        <stop offset="12%" stop-color="#d0e4ff" stop-opacity="0.78"/>
+        <stop offset="35%" stop-color="#7098e0" stop-opacity="0.22"/>
+        <stop offset="70%" stop-color="#5080c8" stop-opacity="0.04"/>
+        <stop offset="100%" stop-color="#5080c8" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="lcTail2" x1="1085" y1="615" x2="462" y2="308" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#7040c0" stop-opacity="0.38"/>
+        <stop offset="55%" stop-color="#7040c0" stop-opacity="0.07"/>
+        <stop offset="100%" stop-color="#7040c0" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="lcGlow2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="white" stop-opacity="0.92"/>
+        <stop offset="12%" stop-color="#e0d0ff" stop-opacity="0.76"/>
+        <stop offset="35%" stop-color="#9868d8" stop-opacity="0.2"/>
+        <stop offset="70%" stop-color="#7848c0" stop-opacity="0.04"/>
+        <stop offset="100%" stop-color="#7848c0" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <!-- Comet 1: blue, head at upper-left (138, 82) -->
+    <path d="M 138 82 C 297 164 615 325 774 406 L 782 390 C 621 313 299 158 138 82 Z" fill="url(#lcTail1)"/>
+    <path d="M 138 82 C 300 172 620 336 780 420 L 788 413 C 624 322 303 165 138 82 Z" fill="url(#lcTail1)" opacity="0.26"/>
+    <ellipse cx="138" cy="82" rx="32" ry="32" fill="url(#lcGlow1)"/>
+    <path d="M 1085 615 C 930 535 621 379 466 300 L 458 316 C 615 391 928 541 1085 615 Z" fill="url(#lcTail2)"/>
+    <path d="M 1085 615 C 928 528 615 368 459 290 L 452 305 C 611 381 924 521 1085 615 Z" fill="url(#lcTail2)" opacity="0.24"/>
+    <ellipse cx="1085" cy="615" rx="30" ry="30" fill="url(#lcGlow2)"/>
+  </svg>
+  <div class="vc-wrap">
+    <div class="vc-name">평</div>
+    <div class="vc-tagline">DJMAX · IIDX</div>
+
+    <div class="vc-section">
+      <div class="vc-section-title">글</div>
+      <div class="vc-list">
+        <a class="vc-item" href="#">
+          <span>성과</span>
+          <span class="vc-item-arr">→</span>
+        </a>
+        <a class="vc-item" href="#">
+          <span>DJMAX 방송 관련글</span>
+          <span class="vc-item-arr">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="vc-section">
+      <div class="vc-section-title">SNS</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a class="vc-sns-banner banner-a" href="https://x.com/elcleardan" target="_blank">
+          <span class="vc-banner-text">흥</span>
+        </a>
+        <a class="vc-sns-banner banner-b" href="https://x.com/notelcleardan" target="_blank">
+          <span class="vc-banner-text">평</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const labels = { A: 'A — 미니멀 다크', B: 'B — 카드 그리드', C: 'C — 라이트 클린', D: 'D — 프사 배경 히어로' };
+const lightVars = ['C', 'D'];
+function show(v) {
+  ['A','B','C','D'].forEach(x => {
+    const el = document.getElementById('var'+x);
+    if (x === v) {
+      el.style.display = (x === 'A') ? 'flex' : 'block';
+    } else {
+      el.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.switcher button').forEach((b,i) => {
+    b.classList.toggle('active', ['A','B','C','D'][i] === v);
+  });
+  document.getElementById('varLabel').textContent = labels[v];
+  const isLight = lightVars.includes(v);
+  if (v === 'C') {
+    document.body.style.background = '#e4e0f2';
+  } else if (v === 'A') {
+    document.body.style.background = '#05080e';
+  } else {
+    document.body.style.background = isLight ? '#faf8f8' : '#0e0e10';
+  }
+  document.body.style.color = isLight ? '#2b2b2b' : '#e0e0e0';
+  document.body.style.padding = (v === 'A' || v === 'C' || v === 'D') ? '0' : '24px';
+}
+show('A');
+</script>
+</body>
+</html>
