@@ -80,36 +80,35 @@ body[data-slug="index"] h2 {
     height: auto;
     border: none;
     overflow: visible;
-    margin: 0.6em 0 0;
+    margin: 0.4em 0 0;
 
-    // 로컬 미리보기 제거 — 렌더 방식(canvas/svg) 무관하게 전부 숨김.
+    // 로컬 미리보기/아이콘 전부 제거 — 렌더 방식(canvas/svg/무엇이든) 무관.
+    // 직접 자식을 싹 숨기고, 클릭 텍스트만 다시 보이게.
     // (전체보기 오버레이 .global-graph-outer 는 .graph-outer 밖이라 영향 없음)
-    .graph-container,
-    canvas,
-    svg {
+    > * {
       display: none !important;
     }
 
-    // 떠있던 아이콘 → 전체폭 텍스트 버튼
+    // 클릭하면 전체 그래프 위젯이 뜨는 텍스트 링크
     > .global-graph-icon {
+      display: inline !important;
       position: static;
       opacity: 1;
-      display: block;
-      box-sizing: border-box;
-      width: 100%;
+      width: auto;
       height: auto;
-      padding: 0.5rem 0.8rem;
+      padding: 0;
       margin: 0;
-      border: 1px solid var(--lightgray);
-      border-radius: 6px;
-      color: var(--darkgray);
+      border: none;
+      background: none;
+      color: var(--secondary);
       font-size: 0.85rem;
-      text-align: center;
-      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
 
-      // 아이콘 숨김 (글씨만)
+      // 안에 들어있는 아이콘 svg 숨김
       svg {
-        display: none;
+        display: none !important;
       }
 
       &::after {
@@ -117,8 +116,7 @@ body[data-slug="index"] h2 {
       }
 
       &:hover {
-        background-color: var(--lightgray);
-        color: var(--dark);
+        color: var(--tertiary);
       }
     }
   }
