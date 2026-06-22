@@ -29,20 +29,9 @@ article {
   }
 }
 
-// 홈페이지 인용(callout) 헤더를 이름처럼 크게
-body[data-slug="index"] {
-  .callout[data-callout="quote"] {
-    .callout-title-inner {
-      font-family: var(--headerFont);
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-  }
-
-  // 홈 섹션 제목 간격
-  h2 {
-    margin-top: 2rem;
-  }
+// 홈 섹션 제목 간격
+body[data-slug="index"] h2 {
+  margin-top: 2rem;
 }
 
 // ───────────────────────────────────────────────
@@ -71,5 +60,54 @@ body[data-slug="index"] {
   .nav-file-title.active {
     background: var(--highlight);
     font-weight: 600;
+  }
+}
+
+// ───────────────────────────────────────────────
+// 그래프: 로컬 미리보기 캔버스 숨기고 "전체 보기" 버튼만
+// ───────────────────────────────────────────────
+.graph {
+  > .graph-outer {
+    height: auto;
+    border: none;
+    overflow: visible;
+    margin: 0.5em 0 0;
+
+    // 로컬(깊이 1) 미리보기 캔버스 제거
+    > .graph-container {
+      display: none;
+    }
+
+    // 떠있던 아이콘 → 일반 버튼 ("전체 그래프 보기")
+    > .global-graph-icon {
+      position: static;
+      opacity: 1;
+      width: auto;
+      height: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.8rem;
+      margin: 0;
+      border: 1px solid var(--lightgray);
+      border-radius: 6px;
+      color: var(--darkgray);
+      font-size: 0.85rem;
+
+      svg {
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+      }
+
+      &::after {
+        content: "전체 그래프 보기";
+      }
+
+      &:hover {
+        background-color: var(--lightgray);
+        color: var(--dark);
+      }
+    }
   }
 }
