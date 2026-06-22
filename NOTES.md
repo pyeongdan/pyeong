@@ -13,6 +13,12 @@
 2. CI 배포는 빌드 전에 `npx quartz plugin install` 필수.
    - Quartz 5는 커뮤니티 플러그인을 github에서 받아옴.
    - 이미 `.github/workflows/deploy.yml`에 반영됨.
+3. `enableSPA: false` 유지(quartz.config.yaml).
+   - GitHub Pages 서브경로(/pyeong) + 폴더 페이지 + 상대링크 조합에서 SPA가 클릭 이동 시 `/pyeong/` 프리픽스를 떨어뜨려 404가 났음(직접 로드는 GitHub의 trailing-slash 301로 우회돼 "가끔"만 발생).
+   - SPA를 끄면 매 이동이 풀 로드 → GitHub가 슬래시를 붙여줘 상대링크가 항상 정상. 트레이드오프: 이동이 살짝 느림(작은 사이트라 체감 거의 없음).
+4. 폴더 대표(허브) 노트는 `폴더/index.md`로 둘 것.
+   - 폴더명과 같은 이름의 파일(예: `성과/성과.md`)을 두면 슬러그 충돌로 빈 폴더페이지와 실제 내용이 **다른 노드로 갈라져** 그래프/링크가 끊김.
+   - `성과` 허브는 `성과/index.md`(title: 성과)로 둠. **vault에서도 `평\성과\성과.md`를 `평\성과\index.md`로 바꿔야** robocopy 후에도 유지됨(안 바꾸면 다음 동기화 때 충돌 재발).
 
 
 ## 노트를 수정하려면
@@ -25,6 +31,15 @@
   - (B) content/의 .md를 직접 고친 후 commit + push.
 - push하면 GitHub Actions가 자동으로 다시 빌드/배포함.
 - ONGEKI(`방송글/콜라보/ONGEKI COLLABORATION LIVE(미완).md`)는 **공개**로 전환됨(과거 비공개 방침 폐기).
+
+## 홈페이지(메인) 수정
+- 메인 페이지 = `content/index.md` (vault에 없는 사이트 전용 파일). **Obsidian이 아니라 이 파일을 직접 고친 뒤 push.**
+- 구조: `## 글` 리스트(위키링크) + `## SNS` 리스트(마크다운 링크). 디자인 군더더기 없이 단순 유지.
+- robocopy는 index.md를 덮어쓰지 않음(vault에 없으므로). 단 vault의 `평.md`가 동기화로 content에 딸려와 stray 노드가 될 수 있으니, 필요시 content에서 삭제.
+
+## 그래프(노드뷰)
+- 간격/힘은 quartz.config.yaml의 graph 플러그인 `options.localGraph`/`globalGraph`에서 조정(repelForce 클수록 멀어짐, linkDistance 링크 길이).
+- 화살표(방향선)는 기본 미지원 — 추가하려면 graph 렌더링(PIXI moveTo/lineTo) 패치 필요(미니파이 dist까지 sed 패치, 취약). 현재 미적용.
 
 ## 기타
 - 저장소는 public. 즉 원본 마크다운 노트도 누구나 볼 수 있음.
