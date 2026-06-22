@@ -85,9 +85,6 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
 
-      - name: Copy custom homepage
-        run: cp homepage/index.html public/index.html
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
