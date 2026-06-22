@@ -82,9 +82,12 @@ body[data-slug="index"] h2 {
     overflow: visible;
     margin: 0.6em 0 0;
 
-    // 로컬(깊이 1) 미리보기 캔버스 제거
-    > .graph-container {
-      display: none;
+    // 로컬 미리보기 제거 — 렌더 방식(canvas/svg) 무관하게 전부 숨김.
+    // (전체보기 오버레이 .global-graph-outer 는 .graph-outer 밖이라 영향 없음)
+    .graph-container,
+    canvas,
+    svg {
+      display: none !important;
     }
 
     // 떠있던 아이콘 → 전체폭 텍스트 버튼
