@@ -165,11 +165,13 @@ plugins:
         linkDistance: 80
         centerForce: 0.12
         scale: 1.0
+        showTags: false
       globalGraph:
         repelForce: 2.6
         linkDistance: 80
         centerForce: 0.08
         scale: 0.85
+        showTags: false
     layout:
       position: right
       priority: 10
