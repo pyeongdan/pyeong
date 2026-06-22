@@ -64,44 +64,53 @@ body[data-slug="index"] h2 {
 }
 
 // ───────────────────────────────────────────────
-// 그래프: 로컬 미리보기 캔버스 숨기고 "전체 보기" 버튼만
+// 그래프: 로컬 미리보기 캔버스 숨기고 "크게 보기" 버튼만 (글씨만)
 // ───────────────────────────────────────────────
 .graph {
+  // 제목 "Graph View" → "노드맵"
+  > h3 {
+    font-size: 0;
+    &::after {
+      content: "노드맵";
+      font-size: 1rem;
+    }
+  }
+
   > .graph-outer {
     height: auto;
     border: none;
     overflow: visible;
-    margin: 0.5em 0 0;
+    margin: 0.6em 0 0;
 
     // 로컬(깊이 1) 미리보기 캔버스 제거
     > .graph-container {
       display: none;
     }
 
-    // 떠있던 아이콘 → 일반 버튼 ("전체 그래프 보기")
+    // 떠있던 아이콘 → 전체폭 텍스트 버튼
     > .global-graph-icon {
       position: static;
       opacity: 1;
-      width: auto;
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
       height: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.45rem 0.8rem;
+      padding: 0.5rem 0.8rem;
       margin: 0;
       border: 1px solid var(--lightgray);
       border-radius: 6px;
       color: var(--darkgray);
       font-size: 0.85rem;
+      text-align: center;
+      white-space: nowrap;
 
+      // 아이콘 숨김 (글씨만)
       svg {
-        width: 15px;
-        height: 15px;
-        flex-shrink: 0;
+        display: none;
       }
 
       &::after {
-        content: "전체 그래프 보기";
+        content: "전체 보기";
       }
 
       &:hover {
