@@ -18,17 +18,19 @@
    - SPA를 끄면 매 이동이 풀 로드 → GitHub가 슬래시를 붙여줘 상대링크가 항상 정상. 트레이드오프: 이동이 살짝 느림(작은 사이트라 체감 거의 없음).
 4. 폴더 대표(허브) 노트는 `폴더/index.md`로 둘 것.
    - 폴더명과 같은 이름의 파일(예: `성과/성과.md`)을 두면 슬러그 충돌로 빈 폴더페이지와 실제 내용이 **다른 노드로 갈라져** 그래프/링크가 끊김.
-   - `성과` 허브는 `성과/index.md`(title: 성과)로 둠. **vault에서도 `평\성과\성과.md`를 `평\성과\index.md`로 바꿔야** robocopy 후에도 유지됨(안 바꾸면 다음 동기화 때 충돌 재발).
+   - `성과` 허브는 `성과/index.md`로 둠. vault는 `성과/성과.md` 그대로 둬도 됨 — **`sync.ps1`이 동기화 후 자동으로 `성과/성과.md`→`성과/index.md`로 정규화**함.
+   - 그래프 매칭: 폴더노트 슬러그는 simplifySlug에서 `성과/`(끝 슬래시)가 됨. 그래서 홈에서 `[[성과]]`(→`성과`)로 걸면 그래프 엣지가 안 생김. **`content/index.md`에서는 `[[성과/index|성과]]`로 걸어야** `성과/`에 매칭돼 평→성과 연결됨.
 
 
 ## 노트를 수정하려면
 - content/는 vault(`...\obsidian\평\평`)의 복사본이며 **폴더 구조까지 그대로 미러링**함. Explorer 트리 = 이 폴더 구조.
 - vault를 고쳐도 사이트는 자동으로 안 바뀜.
-- 갱신 방법 두 가지:
-  - (A) vault에서 고친 뒤 robocopy로 content/에 동기화 후 commit + push:
-    `robocopy "C:\Users\lee\Documents\obsidian\평\평" "C:\dev\pyeong-quartz\content" /E /XD .obsidian`
-    주의: robocopy는 추가/수정만 반영. vault에서 **삭제**한 파일은 content/에서 수동으로 지워야 함.
-  - (B) content/의 .md를 직접 고친 후 commit + push.
+- 갱신 방법:
+  - (A) **권장**: Obsidian에서 글 수정/추가 후 프로젝트 폴더에서 `.\sync.ps1` 실행.
+    sync.ps1 = robocopy(vault→content) + 구조 정규화(성과/성과.md→index.md, stray 평.md 제거) + git add/commit/push 한 방.
+    커밋 메시지 지정: `.\sync.ps1 "메시지"`.
+  - (B) content/의 .md를 직접 고친 후 git add/commit/push.
+- 주의: robocopy는 추가/수정만 반영. vault에서 **삭제**한 파일은 content/에서 수동으로 지워야 함(/MIR는 index.md·sync.ps1까지 지우므로 쓰지 말 것).
 - push하면 GitHub Actions가 자동으로 다시 빌드/배포함.
 - ONGEKI(`방송글/콜라보/ONGEKI COLLABORATION LIVE(미완).md`)는 **공개**로 전환됨(과거 비공개 방침 폐기).
 

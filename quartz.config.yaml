@@ -161,15 +161,15 @@ plugins:
     enabled: true
     options:
       localGraph:
-        repelForce: 1.0
-        linkDistance: 45
-        centerForce: 0.25
-        scale: 1.2
-      globalGraph:
-        repelForce: 1.0
-        linkDistance: 50
-        centerForce: 0.15
+        repelForce: 2.6
+        linkDistance: 80
+        centerForce: 0.12
         scale: 1.0
+      globalGraph:
+        repelForce: 2.6
+        linkDistance: 80
+        centerForce: 0.08
+        scale: 0.85
     layout:
       position: right
       priority: 10
