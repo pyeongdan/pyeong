@@ -9,21 +9,10 @@ $vaultRoot = "C:\Users\lee\Documents\obsidian\평"
 $vault   = "$vaultRoot\평"
 $content = "C:\dev\pyeong-quartz\content"
 $repo    = "C:\dev\pyeong-quartz"
-# vault 루트(평\)에 있는 첨부 폴더들 — 노트는 평\평\ 안에 있지만 이미지는 루트에 저장되므로 별도 복사.
-$attachments = @("성과사진")
 
 Write-Host "[1/4] vault -> content 동기화 (robocopy)..." -ForegroundColor Cyan
-# /E 하위폴더 포함, /XD .obsidian 제외. robocopy 종료코드 0~7은 정상.
 robocopy $vault $content /E /XD .obsidian | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy 실패 (exit $LASTEXITCODE)" }
-# 첨부(이미지) 폴더 복사 — 이게 빠지면 ![[성과사진/...png]] 임베드가 사이트에서 깨짐.
-foreach ($a in $attachments) {
-  if (Test-Path "$vaultRoot\$a") {
-    robocopy "$vaultRoot\$a" "$content\$a" /E /XD .obsidian | Out-Null
-    if ($LASTEXITCODE -ge 8) { throw "robocopy($a) 실패 (exit $LASTEXITCODE)" }
-    Write-Host "    첨부 복사: $a" -ForegroundColor DarkGray
-  }
-}
 
 Write-Host "[2/4] 구조 정규화..." -ForegroundColor Cyan
 # 성과 폴더노트: 성과/성과.md -> 성과/index.md (그래프/링크 일관성)

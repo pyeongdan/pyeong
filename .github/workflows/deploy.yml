@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -60,27 +60,18 @@ jobs:
       - name: Patch graph link visibility
         run: |
           TS_FILE=".quartz/plugins/graph/src/components/scripts/graph.inline.ts"
-          JS_FILE=".quartz/plugins/graph/dist/components/index.js"
 
-          # Patch TypeScript source
-          if [ -f "$TS_FILE" ]; then
-            sed -i 's/color: lightgray,$/color: gray,/' "$TS_FILE"
-            sed -i 's/linkData\.active ? gray : lightgray/linkData.active ? gray : gray/' "$TS_FILE"
-            sed -i 's/alpha: l\.alpha, width: 1,/alpha: l.alpha, width: 2,/' "$TS_FILE"
-            echo "TS patched"
+          if [ ! -f "$TS_FILE" ]; then
+            echo "ERROR: TS file not found at $TS_FILE" && exit 1
           fi
 
-          # Patch minified dist JS (variable names: lightgray=te, gray=ee)
-          if [ -f "$JS_FILE" ]; then
-            # Initial link color in linkRenderData.push
-            sed -i 's/color:te,alpha:1,active:!1/color:ee,alpha:1,active:!1/g' "$JS_FILE"
-            # renderLinks: inactive link color
-            sed -i 's/\.active?ee:te/\.active?ee:ee/g' "$JS_FILE"
-            # stroke width in animate loop
-            sed -i 's/width:1,color:v\.color/width:2,color:v.color/g' "$JS_FILE"
-            echo "=== Verify dist patch ==="
-            grep -o "color:ee,alpha:1\|color:te,alpha:1\|width:1,color:v\|width:2,color:v\|active?ee:te\|active?ee:ee" "$JS_FILE" || true
-          fi
+          sed -i 's/color: lightgray,$/color: gray,/' "$TS_FILE"
+          sed -i 's/linkData\.active ? gray : lightgray/linkData.active ? gray : gray/' "$TS_FILE"
+          sed -i 's/alpha: l\.alpha, width: 1,/alpha: l.alpha, width: 2,/' "$TS_FILE"
+          echo "TS patched"
+
+          cd .quartz/plugins/graph && npm run build
+          echo "Graph plugin rebuilt from patched source"
 
       - name: Build Quartz
         run: npx quartz build

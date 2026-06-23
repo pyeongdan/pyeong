@@ -6,7 +6,7 @@ configuration:
   enablePopovers: true
   analytics:
     provider: plausible
-  locale: en-US
+  locale: ko-KR
   baseUrl: pyeongdan.github.io/pyeong
   ignorePatterns:
     - private
@@ -166,6 +166,7 @@ plugins:
         centerForce: 0.12
         scale: 1.0
         showTags: false
+        enableRadial: true
       globalGraph:
         repelForce: 2.6
         linkDistance: 80
