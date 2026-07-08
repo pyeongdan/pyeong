@@ -70,7 +70,7 @@ jobs:
           sed -i 's/alpha: l\.alpha, width: 1,/alpha: l.alpha, width: 2,/' "$TS_FILE"
           echo "TS patched"
 
-          cd .quartz/plugins/graph && npm run build
+          cd .quartz/plugins/graph && npm ci && npm run build
           echo "Graph plugin rebuilt from patched source"
 
       - name: Build Quartz

@@ -43,6 +43,12 @@
 - 간격/힘은 quartz.config.yaml의 graph 플러그인 `options.localGraph`/`globalGraph`에서 조정(repelForce 클수록 멀어짐, linkDistance 링크 길이).
 - 화살표(방향선)는 기본 미지원 — 추가하려면 graph 렌더링(PIXI moveTo/lineTo) 패치 필요(미니파이 dist까지 sed 패치, 취약). 현재 미적용.
 
+## 동기화 캐비엇 (2026-07-08 추가)
+- robocopy 제외 목록은 `.obsidian .space .makemd .trash` 전부 필요. `.space`(Make.md 플러그인 메타)가 한 번 공개 repo에 올라간 적 있음(히스토리에 잔존).
+- **수동 robocopy + git push는 정규화(성과.md→index.md, 평.md 제거)를 건너뜀** → stray/슬러그 충돌 재발. 반드시 sync.ps1 사용.
+- vault에서 이미지 폴더 구조를 바꾸면(예: 성과사진 → 성과사진/6, /7) robocopy는 옛 파일을 안 지우므로 content에 중복이 쌓임. 재구성 후엔 content 쪽 옛 사본 수동 삭제 필요.
+- CI의 graph 플러그인 재빌드는 `npm ci`(devDependency tsup 설치) 후 `npm run build` — npm ci를 빼면 `tsup: not found`로 전체 배포 실패.
+
 ## 기타
 - 저장소는 public. 즉 원본 마크다운 노트도 누구나 볼 수 있음.
 - 한글 파일명은 URL에서 퍼센트 인코딩되지만 정상 동작함.

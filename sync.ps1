@@ -11,7 +11,7 @@ $content = "C:\dev\pyeong-quartz\content"
 $repo    = "C:\dev\pyeong-quartz"
 
 Write-Host "[1/4] vault -> content 동기화 (robocopy)..." -ForegroundColor Cyan
-robocopy $vault $content /E /XD .obsidian | Out-Null
+robocopy $vault $content /E /XD .obsidian .space .makemd .trash | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy 실패 (exit $LASTEXITCODE)" }
 
 Write-Host "[2/4] 구조 정규화..." -ForegroundColor Cyan
