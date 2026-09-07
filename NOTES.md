@@ -3,7 +3,7 @@
 ## 이 프로젝트는 무엇인가
 - Obsidian 노트를 Quartz 5로 변환해 GitHub Pages로 무료 공개하는 사이트.
 - 원본 vault: `C:\Users\lee\Documents\obsidian\평` (이 폴더는 절대 직접 수정/배포하지 않음).
-- 공개 대상: `V LIBERTY 5 LIVE 정리글`, `V LIBERTY 5 LIVE 스크립트` 2개 + 스크린샷 33장. 이나 파일이변경됨에따라 유동적으로 바뀔수있음.
+- 공개 대상: 방송글(`V LIBERTY 5 LIVE 정리글`, `V LIBERTY 5 LIVE 스크립트` 등) + 스크린샷. 파일이 변경됨에 따라 유동적으로 바뀔 수 있음. 성과 계열은 비공개(아래 5번).
 
 ## 반드시 지킬 것
 1. baseUrl = 저장소 이름과 일치해야 함.
@@ -17,9 +17,12 @@
    - GitHub Pages 서브경로(/pyeong) + 폴더 페이지 + 상대링크 조합에서 SPA가 클릭 이동 시 `/pyeong/` 프리픽스를 떨어뜨려 404가 났음(직접 로드는 GitHub의 trailing-slash 301로 우회돼 "가끔"만 발생).
    - SPA를 끄면 매 이동이 풀 로드 → GitHub가 슬래시를 붙여줘 상대링크가 항상 정상. 트레이드오프: 이동이 살짝 느림(작은 사이트라 체감 거의 없음).
 4. 폴더 대표(허브) 노트는 `폴더/index.md`로 둘 것.
-   - 폴더명과 같은 이름의 파일(예: `성과/성과.md`)을 두면 슬러그 충돌로 빈 폴더페이지와 실제 내용이 **다른 노드로 갈라져** 그래프/링크가 끊김.
-   - `성과` 허브는 `성과/index.md`로 둠. vault는 `성과/성과.md` 그대로 둬도 됨 — **`sync.ps1`이 동기화 후 자동으로 `성과/성과.md`→`성과/index.md`로 정규화**함.
-   - 그래프 매칭: 폴더노트 슬러그는 simplifySlug에서 `성과/`(끝 슬래시)가 됨. 그래서 홈에서 `[[성과]]`(→`성과`)로 걸면 그래프 엣지가 안 생김. **`content/index.md`에서는 `[[성과/index|성과]]`로 걸어야** `성과/`에 매칭돼 평→성과 연결됨.
+   - 폴더명과 같은 이름의 파일(예: `방송글/방송글.md`)을 두면 슬러그 충돌로 빈 폴더페이지와 실제 내용이 **다른 노드로 갈라져** 그래프/링크가 끊김.
+   - 그래프 매칭: 폴더노트 슬러그는 simplifySlug에서 `폴더명/`(끝 슬래시)이 됨. 그래서 홈에서 `[[폴더명]]`으로 걸면 그래프 엣지가 안 생김. **`content/index.md`에서는 `[[폴더명/index|표시이름]]`으로 걸어야** 폴더 노드에 매칭돼 연결됨.
+5. `성과`, `성과사진`은 사이트 비공개(2026-09-07부터).
+   - 갱신을 못 따라가서 사이트에서 내림. **vault에는 그대로 있음** — 지운 건 `content/`와 홈 링크뿐.
+   - `sync.ps1`의 `$excluded`가 robocopy 제외 + content에 남은 잔재 삭제까지 처리하므로, vault에 폴더가 있어도 다시 올라가지 않음.
+   - 다시 공개하려면 `$excluded = @()`로 비우고 `content/index.md`에 `[[성과/index|성과]]` 줄을 되살린 뒤 sync. 이때 허브는 `성과/index.md`여야 함(위 4번).
 
 
 ## 노트를 수정하려면
@@ -27,7 +30,7 @@
 - vault를 고쳐도 사이트는 자동으로 안 바뀜.
 - 갱신 방법:
   - (A) **권장**: Obsidian에서 글 수정/추가 후 프로젝트 폴더에서 `.\sync.ps1` 실행.
-    sync.ps1 = robocopy(vault→content) + 구조 정규화(성과/성과.md→index.md, stray 평.md 제거) + git add/commit/push 한 방.
+    sync.ps1 = robocopy(vault→content, 비공개 폴더 제외) + 구조 정규화(비공개 폴더 잔재·stray 평.md 제거) + git add/commit/push 한 방.
     커밋 메시지 지정: `.\sync.ps1 "메시지"`.
   - (B) content/의 .md를 직접 고친 후 git add/commit/push.
 - 주의: robocopy는 추가/수정만 반영. vault에서 **삭제**한 파일은 content/에서 수동으로 지워야 함(/MIR는 index.md·sync.ps1까지 지우므로 쓰지 말 것).
@@ -45,8 +48,9 @@
 
 ## 동기화 캐비엇 (2026-07-08 추가)
 - robocopy 제외 목록은 `.obsidian .space .makemd .trash` 전부 필요. `.space`(Make.md 플러그인 메타)가 한 번 공개 repo에 올라간 적 있음(히스토리에 잔존).
-- **수동 robocopy + git push는 정규화(성과.md→index.md, 평.md 제거)를 건너뜀** → stray/슬러그 충돌 재발. 반드시 sync.ps1 사용.
+- **수동 robocopy + git push는 sync.ps1의 제외/정규화를 건너뜀** → 비공개 폴더(성과·성과사진)가 다시 올라가고 stray 평.md도 재발. 반드시 sync.ps1 사용.
 - vault에서 이미지 폴더 구조를 바꾸면(예: 성과사진 → 성과사진/6, /7) robocopy는 옛 파일을 안 지우므로 content에 중복이 쌓임. 재구성 후엔 content 쪽 옛 사본 수동 삭제 필요.
+- `sync.ps1`은 **UTF-8 BOM으로 저장**할 것. BOM이 없으면 Windows PowerShell 5.1이 ANSI(CP949)로 읽어 스크립트 안의 한글 경로 문자열(`$excluded` 등)이 깨지고, 제외/삭제가 오류 없이 조용히 실패함.
 - CI의 graph 플러그인 재빌드는 `npm ci`(devDependency tsup 설치) 후 `npm run build` — npm ci를 빼면 `tsup: not found`로 전체 배포 실패.
 
 ## 기타
